@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Reverse Voice Challenge</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="game-header">
+        <div class="player-badge" id="current-player-badge">
+            <span class="icon" id="role-icon">🎤</span>
+            <span class="name" id="player-name-display">準備中</span>
+        </div>
+        <div class="game-info">
+            <span id="round-info">Round 1/5</span>
+            <button id="history-btn" class="icon-btn">📜</button>
+        </div>
+    </header>
+
+    <main class="app-container">
+        
+        <section id="setup-view" class="view active">
+            <h1 class="logo-title">倒放<br>挑戰者</h1>
+            <div class="input-group">
+                <input type="text" id="p1-name" placeholder="玩家 A 名字" value="Player A">
+                <div class="color-dot p1-bg"></div>
+            </div>
+            <div class="input-group">
+                <input type="text" id="p2-name" placeholder="玩家 B 名字" value="Player B">
+                <div class="color-dot p2-bg"></div>
+            </div>
+            <div class="instruction-card">
+                <p>🎤 出題者錄音 -> 🎧 答題者聽倒放 -> 🗣️ 答題者模仿錄音(並倒放檢查) -> ✅ 出題者判定</p>
+            </div>
+            <button id="start-game-btn" class="btn-primary">開始遊戲 (授予麥克風權限)</button>
+        </section>
+
+        <section id="game-view" class="view">
+            <div class="status-message" id="status-text">請出題者錄製題目</div>
+
+            <div class="interaction-zone">
+                
+                <div class="record-container" id="record-control">
+                    <button id="record-btn" class="record-btn">
+                        <span class="mic-icon">🎙️</span>
+                    </button>
+                    <p class="hint">按住錄音，鬆開結束</p>
+                </div>
+
+                <div class="playback-controls hidden" id="playback-control">
+                    <div class="audio-card challenger-card">
+                        <span class="label">題目 (倒放)</span>
+                        <button id="play-challenge-btn" class="play-btn">▶ 播放</button>
+                    </div>
+
+                    <div class="audio-card guesser-card hidden" id="mimic-zone">
+                        <span class="label">我的模仿 (倒放)</span>
+                        <button id="play-mimic-btn" class="play-btn" disabled>無錄音</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <button id="confirm-challenge-btn" class="btn-secondary hidden">確認題目，交給答題者</button>
+                
+                <div id="judge-controls" class="judge-group hidden">
+                    <div class="judge-info">剩餘機會: <span id="attempts-left">5</span></div>
+                    <div class="judge-btns">
+                        <button id="fail-btn" class="btn-judge fail">❌ 錯誤</button>
+                        <button id="success-btn" class="btn-judge success">✅ 正確</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="history-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>對戰記錄</h2>
+                    <button id="close-history" class="close-btn">×</button>
+                </div>
+                <ul id="history-list">
+                    </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="overlay-msg" class="overlay-msg hidden">
+        <h2 id="overlay-text">Round 1 End!</h2>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

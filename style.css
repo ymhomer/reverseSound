@@ -1,0 +1,159 @@
+:root {
+    /* 基礎色調 */
+    --bg-color: #f0f4f8;
+    --text-color: #2d3436;
+    --card-bg: #ffffff;
+    
+    /* 玩家 A 主題 (藍紫色系) */
+    --p1-primary: #6c5ce7;
+    --p1-light: #a29bfe;
+    --p1-bg: #dfe6e9;
+
+    /* 玩家 B 主題 (橙紅色系) */
+    --p2-primary: #e17055;
+    --p2-light: #fab1a0;
+    --p2-bg: #ffeaa7;
+
+    /* 當前動態變量 (JS控制修改) */
+    --current-primary: var(--p1-primary);
+    --current-light: var(--p1-light);
+    --current-bg: var(--bg-color);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+
+body {
+    font-family: 'Fredoka', sans-serif;
+    background-color: var(--current-bg);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+    transition: background-color 0.5s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.game-header {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.player-badge {
+    background: var(--current-primary);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.game-info { display: flex; align-items: center; gap: 10px; font-weight: bold; color: #636e72; }
+.icon-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+
+/* Main Container */
+.app-container {
+    flex: 1;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.view { display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; justify-content: center; }
+.view.active { display: flex; animation: fadeIn 0.4s ease; }
+
+/* Setup View */
+.logo-title { font-size: 3rem; text-align: center; color: var(--p1-primary); margin-bottom: 30px; line-height: 1.2; }
+.input-group { position: relative; margin-bottom: 15px; width: 100%; max-width: 300px; }
+.input-group input {
+    width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 15px; font-size: 1.1rem; outline: none;
+    font-family: inherit;
+}
+.color-dot { width: 20px; height: 20px; border-radius: 50%; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); }
+.p1-bg { background: var(--p1-primary); }
+.p2-bg { background: var(--p2-primary); }
+.instruction-card { background: white; padding: 15px; border-radius: 15px; margin: 20px 0; font-size: 0.9rem; color: #636e72; line-height: 1.5; text-align: center; }
+
+/* Buttons */
+.btn-primary, .btn-secondary {
+    padding: 15px 30px; border: none; border-radius: 50px; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 300px;
+    font-family: inherit; transition: transform 0.1s;
+}
+.btn-primary { background: var(--current-primary); color: white; }
+.btn-secondary { background: white; color: var(--current-primary); border: 2px solid var(--current-primary); margin-top: 10px; }
+.btn-primary:active { transform: scale(0.95); }
+
+/* Game Interface */
+.status-message { font-size: 1.5rem; font-weight: 600; text-align: center; margin-bottom: 30px; min-height: 60px; }
+
+.interaction-zone { flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+/* Record Button */
+.record-container { text-align: center; }
+.record-btn {
+    width: 120px; height: 120px; border-radius: 50%; border: none;
+    background: var(--card-bg);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    font-size: 3rem; color: var(--current-primary);
+    cursor: pointer; position: relative; outline: none;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+.record-btn.recording {
+    background: #ff7675; color: white; transform: scale(1.1);
+    animation: pulse 1s infinite;
+}
+.hint { margin-top: 15px; color: #b2bec3; font-size: 0.9rem; }
+
+/* Playback Controls */
+.playback-controls { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 15px; }
+.audio-card {
+    background: white; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.play-btn {
+    background: var(--current-light); color: var(--text-color); border: none; padding: 8px 16px; border-radius: 10px; font-weight: bold; cursor: pointer;
+}
+.play-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.play-btn.playing { background: #55efc4; }
+
+/* Judge Controls */
+.judge-group { width: 100%; text-align: center; }
+.judge-info { margin-bottom: 10px; font-weight: bold; color: #636e72; }
+.judge-btns { display: flex; gap: 15px; justify-content: center; }
+.btn-judge {
+    flex: 1; padding: 15px; border: none; border-radius: 15px; font-size: 1.2rem; font-weight: bold; cursor: pointer; max-width: 140px;
+}
+.fail { background: #fab1a0; color: #d63031; }
+.success { background: #55efc4; color: #00b894; }
+
+/* Modal & Utils */
+.hidden { display: none !important; }
+.modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 100; display: none; align-items: center; justify-content: center; }
+.modal.open { display: flex; }
+.modal-content { background: white; width: 90%; max-width: 400px; max-height: 80vh; border-radius: 20px; padding: 20px; overflow-y: auto; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.close-btn { background:none; border:none; font-size: 2rem; cursor: pointer; }
+
+#history-list li { list-style: none; padding: 10px; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+.overlay-msg {
+    position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index: 200;
+    display: flex; justify-content: center; align-items: center; color: white; font-size: 2rem;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Animations */
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(255, 118, 117, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
